@@ -1,7 +1,6 @@
 ---
 title: "Import Data - ACF - PACF"
 author: "Luana Lima"
-date: "1/19/2022"
 output: pdf_document
 editor_options: 
   chunk_output_type: console
