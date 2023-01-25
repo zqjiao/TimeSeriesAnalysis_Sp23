@@ -10,7 +10,7 @@ geometry: margin=2.54cm
 
 You should open the .rmd file corresponding to this assignment on RStudio. The file is available on our class repository on Github.   
 
-Once you have the file open on your local machine the first thing you will do is rename the file such that it includes your first and last name (e.g., "LuanaLima_TSA_A02_Sp22.Rmd"). Then change "Student Name" on line 4 with your name. 
+Once you have the file open on your local machine the first thing you will do is rename the file such that it includes your first and last name (e.g., "LuanaLima_TSA_A02_Sp23.Rmd"). Then change "Student Name" on line 4 with your name. 
 
 Then you will start working through the assignment by  **creating code and output** that answer each question. Be sure to use this assignment document. Your report should contain the answer to each question and any plots/tables you obtained (when applicable).
 
