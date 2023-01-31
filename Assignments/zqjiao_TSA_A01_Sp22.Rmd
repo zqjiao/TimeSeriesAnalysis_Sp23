@@ -1,7 +1,7 @@
 ---
 title: "ENV 790.30 - Time Series Analysis for Energy Data | Spring 2023"
 subtitle: "Assignment 1 - Due date 01/24/23"
-author: "Student Name"
+author: "Zhengqi Jiao"
 output: pdf_document
 geometry: margin=2.54cm
 ---
@@ -20,11 +20,11 @@ When you have completed the assignment, **Knit** the text and code into a single
 Q1. What are your previous experiences with time series analysis, R, and Git? 
 
 > Answer: 
-
+I took the ENV710 Applied Statistical Modeling for Environmental Management last semester, and it includes the infomration about R. I am not familar with time series analysis and Git. 
 
 Q2. (Only if you choose to use git) Provide a link below to your forked course repository in GitHub. Make sure you have pulled all recent changes from the course repository and that you have updated your course README file as instructed on the recorded video "Getting started with Git and Github". 
 
-> Answer: 
+> Answer: https://github.com/zqjiao/TimeSeriesAnalysis_Sp23
 
 
 Q3. For this part we just want to see the path to your R project. No need to do anything. The output will be automatically generated once you knit you file. 

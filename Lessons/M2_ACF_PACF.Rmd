@@ -156,3 +156,16 @@ ts_inflow_data
 
 Note that ts_inflow_data has information on start, end and frequency. We will discuss frequency in future lectures, for now let's just keep the default value for frequency which is 1.
 
+#ACF PACF
+```{r}
+acf(ts_inflow_data[,1])
+acf(ts_inflow_data[,1],lag.max = 50)
+
+#pacf(ts_inflow_data[,1])
+```
+inside of blue lines are not significant. Outside are significant. 
+```{r}
+#remove last 12 obs
+inflow_data <- inflow_data[1:(nobs-12),]
+```
+
