@@ -22,6 +22,7 @@ It's useful to designate one code chunk to load packages on the beginning of the
 ```{r package, include=FALSE}
 library(lubridate)
 library(ggplot2)
+library(forecast) #added for Acf and Pacf functions
 
 ```
 
@@ -47,8 +48,8 @@ For this first example we will import water inflow data for reservoirs in Brazil
 
 #check which folder is your current directory using function getwd()
 getwd()
-# my output was "/Users/lmm89/OneDrive/Duke_University/9_Spring2022/ENV790_TSA/Git_Repo/ENV790_TimeSeriesAnalysis_Sp2022_v2" meaning current directory is my project folder, therefore I only need to use "."
-# if output was "/Users/lmm89/OneDrive/Duke_University/9_Spring2022/ENV790_TSA/Git_Repo/ENV790_TimeSeriesAnalysis_Sp2022_v2/Lessons" then I would need to use ".."
+# my output was "/Users/lmm89/Library/CloudStorage/OneDrive-Personal/Duke_University/11_Spring2023/ENV790_TSA/GitHub/TimeSeriesAnalysis_Sp23" meaning current directory is my project folder, therefore I only need to use "."
+# if output was "/Users/lmm89/Library/CloudStorage/OneDrive-Personal/Duke_University/11_Spring2023/ENV790_TSA/GitHub/TimeSeriesAnalysis_Sp23/Lessons" then I would need to use ".."
 
 raw_inflow_data <- read.table(file="./Data/inflowtimeseries.txt",header=FALSE,skip=0)
 
@@ -65,6 +66,7 @@ colnames(raw_inflow_data)=c("Month","Year", "HP1", "HP2","HP3")
 head(raw_inflow_data)
 str(raw_inflow_data)
 ```
+
 ## Date or time period
 
 The data sets we will work with will be index by time, remember we are doing TIME series analysis. After importing your data set make sure that you have your dates right. For this specific inflow file our date is spread in two different columns. The first one is the month and the second the year. The best package to handle date conversion in R is lubridate. Let's see how we can use lubridate functions to combine those two columns into one date object. Note that this is only one example for our particular data set, for more info on lubridate function refer to tho this file [file](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_lubridate.pdf) also available on our Sakai lessons page for M3.
@@ -129,7 +131,7 @@ plot(inflow_data[,"HP1"],inflow_data[,"HP2"])
 
 ## Improving plots with time period information
 
-We could improve the plots generated in the previous sections using another package *ggplot2*. Package ggplot2 offers better looking plots, additional fucntionalities, easy incorporation of the date labels, legends, etc.  Let's see how we would reproduce the plots from the previous section with ggplot2.
+We could improve the plots generated in the previous sections using another package *ggplot2*. Package ggplot2 offers better looking plots, additional functionalities, easy incorporation of the date labels, legends, etc.  Let's see how we would reproduce the plots from the previous section with ggplot2.
 
 ```{r}
 #using package ggplot2
@@ -143,6 +145,10 @@ ggplot(inflow_data, aes(x=my_date, y=Inflow)) +
             xlab("Time") +
             labs(color="Reservoir")
 ```
+
+Or using *autoplot()*. But then you need to convert to a *ts* object first.
+
+
 ## Transforming data into time series object
 
 Many of the functions we will use require a time series object. You can transform your data in a time series using the function *ts()*. Only the columns with reservoir inflow data should be transformed, not the ones with month and year. Your ts object is not a data frame, but like I said we will need it as a ts for some function we will explore in future scripts.
@@ -155,16 +161,36 @@ ts_inflow_data
 
 Note that ts_inflow_data has information on start, end and frequency. We will discuss frequency in future lectures, for now let's just keep the default value for frequency which is 1.
 
-#ACF PACF
-```{r}
-acf(ts_inflow_data[,1])
-acf(ts_inflow_data[,1],lag.max = 50)
+Let's see the plots generated with *autoplot()*.
 
-#pacf(ts_inflow_data[,1])
-```
-inside of blue lines are not significant. Outside are significant. 
 ```{r}
-#remove last 12 obs
-inflow_data <- inflow_data[1:(nobs-12),]
+autoplot(ts_inflow_data)
+
+#Improving plot
+
+autoplot(ts_inflow_data) +
+  xlab("Time") +
+  ylab("Inflow") +
+  labs(color="Reservoir")
+  
+```
+
+
+## Plotting ACF and PACF
+
+There are multiple ways to get acf and pacf plots in R. The default package "stats" have the functions acf() and pacf(). Another option is with the functions Acf() and Pacf() from package "forecast". Package forecast is not a default package. So you need to install and load it on the beginning of your scripts. 
+
+```{r acf}
+# Option 1: The function acf() and pacf() is from package "stats"
+HP1_acf=acf(ts_inflow_data[,1],lag.max=60, type="correlation", plot=TRUE)
+
+HP1_pacf=pacf(ts_inflow_data[,1],lag.max=60, plot=TRUE)
+
+#Option 2: Computing ACF and PACF with package "forecast"
+
+#The next line will output a plot since we have plot=TRUE and also store the acf values in the object
+HP1_acf=Acf(ts_inflow_data[,1],lag.max=60, type="correlation", plot=TRUE)
+
+HP1_pacf=Pacf(ts_inflow_data[,1],lag.max=60, plot=TRUE)
 ```
 

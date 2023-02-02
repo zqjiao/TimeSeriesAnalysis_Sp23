@@ -12,7 +12,7 @@ First R code chunk is used for setting the options for all R code chunks. The ch
 
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(echo = TRUE,tidy.opts=list(width.cutoff=60), tidy=TRUE) 
-#teh tidy arguments prevent the code from running off the page i.e. wrap by itself
+#the tidy arguments prevent the code from running off the page i.e. wrap by itself
 
 ```
 
