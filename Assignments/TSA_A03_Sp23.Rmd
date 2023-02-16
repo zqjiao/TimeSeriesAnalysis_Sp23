@@ -7,6 +7,9 @@ geometry: margin=2.54cm
 editor_options: 
   chunk_output_type: console
 ---
+```{r}
+
+```
   
 ## Directions
   
