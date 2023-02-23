@@ -1,0 +1,130 @@
+---
+title: "ENV 790.30 - Time Series Analysis for Energy Data | Spring 2023"
+subtitle: "Assignment 2 - Due date 02/03/23"
+author: "Zhengqi Jiao"
+output: pdf_document
+geometry: margin=2.54cm
+---
+
+## Submission Instructions
+
+You should open the .rmd file corresponding to this assignment on RStudio. The file is available on our class repository on Github.   
+
+Once you have the file open on your local machine the first thing you will do is rename the file such that it includes your first and last name (e.g., "LuanaLima_TSA_A02_Sp23.Rmd"). Then change "Student Name" on line 4 with your name. 
+
+Then you will start working through the assignment by  **creating code and output** that answer each question. Be sure to use this assignment document. Your report should contain the answer to each question and any plots/tables you obtained (when applicable).
+
+When you have completed the assignment, **Knit** the text and code into a single PDF file. Submit this pdf using Sakai. 
+
+## R packages
+
+R packages needed for this assignment:"forecast","tseries", and "dplyr". Install these packages, if you haven't done yet. Do not forget to load them before running your script, since they are NOT default packages.\\
+
+```{r}
+#Load/install required package here
+library(forecast)
+library(dplyr)
+library(tseries)
+```
+
+
+## Data set information  
+
+Consider the data provided in the spreadsheet "Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source.xlsx" on our **Data** folder. The data comes from the US Energy Information and Administration and corresponds to the December 2022 Monthly Energy Review. The spreadsheet is ready to be used. You will also find a $.csv$ version of the data "Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source-Edit.csv". You may use the function $read.table()$ to import the $.csv$ data in R. Or refer to the file "M2_ImportingData_CSV_XLSX.Rmd" in our Lessons folder for functions that are better suited for importing the $.xlsx$.
+
+```{r}
+#Importing data set
+energy_data <- read.csv(file="/Users/christine/Documents/TimeSeriesAnalysis/TimeSeriesAnalysis_Jiao/Data/Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source-Edit.csv", header = TRUE, dec = ".", sep=",",stringsAsFactors = TRUE) 
+```
+
+
+## Question 1
+You will work only with the following columns: Total Biomass Energy Production, Total Renewable Energy Production, Hydroelectric Power Consumption. Create a data frame structure with these three time series only. Use the command head() to verify your data.
+
+```{r}
+energy_data1 <- energy_data[,4:6] 
+head(energy_data1)
+```
+
+
+## Question 2
+Transform your data frame in a time series object and specify the starting point and frequency of the time series using the function ts().
+
+```{r}
+ts_energy_data1 <- ts(energy_data1,frequency=12,start=c(1973,1))
+head(ts_energy_data1,20)
+```
+
+
+## Question 3
+Compute mean and standard deviation for these three series.
+
+```{r}
+Biomass_mean <- mean(ts_energy_data1[,"Total.Biomass.Energy.Production"])
+Biomass_mean
+Biomass_sd  <- sd(ts_energy_data1[,"Total.Biomass.Energy.Production"])
+Biomass_sd
+
+Reweable_mean <- mean(ts_energy_data1[,"Total.Renewable.Energy.Production"])
+Reweable_mean
+Reweable_sd <- sd(ts_energy_data1[,"Total.Renewable.Energy.Production"])
+Reweable_sd
+
+Hydroelectric_mean <- mean(ts_energy_data1[,"Hydroelectric.Power.Consumption"])
+Hydroelectric_mean
+Hydroelectric_sd <- sd(ts_energy_data1[,"Hydroelectric.Power.Consumption"])
+Hydroelectric_sd 
+```
+The mean and the standard deviation of the Total.Biomass.Energy.Production is `r Biomass_mean` and `r Biomass_sd`, respectively. The mean and the standard deviation of the Total.Renewable.Energy.Production is `r Reweable_mean` and `r Reweable_sd`, respectively. The mean and the standard deviation of the Hydroelectric.Power.Consumption is `r Hydroelectric_mean` and `r Hydroelectric_sd `, respectively. 
+
+## Question 4
+Display and interpret the time series plot for each of these variables. Try to make your plot as informative as possible by writing titles, labels, etc. For each plot add a horizontal line at the mean of each series in a different color.
+
+```{r}
+library(lubridate)
+plot(ts_energy_data1[,"Total.Biomass.Energy.Production"],type="l",col="blue",ylab="Energy production",main="Biomass Energy data") 
+abline(h=mean(ts_energy_data1[,"Total.Biomass.Energy.Production"]),col="red")
+legend("bottomright", legend="Mean",col=c("red"), lty=1)
+
+plot(ts_energy_data1[,"Total.Renewable.Energy.Production"],type="l",col="pink",ylab="Energy production",main="Renewable Energy data") 
+abline(h=mean(ts_energy_data1[,"Total.Renewable.Energy.Production"]),col="purple")
+legend("bottomright", legend="Mean",col=c("purple"), lty=1)
+
+plot(ts_energy_data1[,"Hydroelectric.Power.Consumption"],type="l",col="green",ylab="Energy consumption",main="Hydroelectric Energy data") 
+abline(h=mean(ts_energy_data1[,"Hydroelectric.Power.Consumption"]),col="orange")
+legend("bottomright", legend="Mean",col=c("orange"), lty=1)
+```
+
+
+## Question 5
+Compute the correlation between these three series. Are they significantly correlated? Explain your answer.
+
+```{r}
+corr <- cor(ts_energy_data1, use = "everything", method = c("spearman"))
+corr
+```
+Since the data relationship is not linear, so use the Spearman's correlation instead of Pearson.The range of correlation is between +1 to -1. Closer to +1 means a stronger positive correlation. Closer to -1 means a stronger negative correlation. When the correlation is closer to 0, it means there is no trend. In this question, Total.Biomass.Energy.Production has a strong positive correlation with Total.Renewable.Energy.Production because the value is `r corr["Total.Renewable.Energy.Production","Total.Biomass.Energy.Production"]`. Total.Renewable.Energy.Production has a strong negative correlation with Hydroelectric.Power.Consumption because the value is `r corr["Total.Renewable.Energy.Production","Hydroelectric.Power.Consumption"]`. Hydroelectric.Power.Consumption has a weak negative correlation with Total.Biomass.Energy.Production because the value is `r corr["Hydroelectric.Power.Consumption","Total.Biomass.Energy.Production"]`.
+
+## Question 6
+Compute the autocorrelation function from lag 1 up to lag 40 for these three variables. What can you say about these plots? Do the three of them have the same behavior?
+
+```{r}
+acf(ts_energy_data1[,1],lag.max = 40, main = "Total.Biomass.Energy.Production")
+acf(ts_energy_data1[,2],lag.max = 40, main = "Total.Renewable.Energy.Production")
+acf(ts_energy_data1[,3],lag.max = 40, main = "Hydroelectric.Power.Consumption")
+```
+In the first pot,for lags up to 3.4,values are statistically significant. This represents that two adjacent values of the Total.Biomass.Energy.Production are highly correlated.
+In the second plot, for lags up to 3.4,values are statistically significant This represents that two adjacent values of the Total.Renewable.Energy.Production are highly correlated.
+In the third plot, the autocorrelation plot for Hydroelectric.Power.Consumption shows that the most spikes are outside the dotted line area, which means they are statistically significant. However, there are some spikes inside the dotted line area, which means they are not statistically significant. This represents most of the two adjacent values of that the Hydroelectric.Power.Consumption are highly correlated, but some are not.
+
+## Question 7
+Compute the partial autocorrelation function from lag 1 to lag 40 for these three variables. How these plots differ from the ones in Q6?
+
+```{r}
+pacf(ts_energy_data1[,1],lag.max = 40)
+pacf(ts_energy_data1[,2],lag.max = 40)
+pacf(ts_energy_data1[,3],lag.max = 40)
+```
+PACF correlation is always smaller than ACF. PACF is about the directly correlation by removing all  intermediate variables. Same with the ACF in Question6, spikes outside the dotted line area are statistically significant. Spikes inside the dotted line area are not statistically significant. Otherwise, ACF and PACF have similar ways for deciding correlations. 
+
+
