@@ -45,6 +45,7 @@ vignettes/*.pdf
 *_NOPOST.xlsx
 *_NOPOST.csv
 *_NOPOST.txt
+*_NOPOST.Rmd
 
 #Mac files
 .DS_Store
