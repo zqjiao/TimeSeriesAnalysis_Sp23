@@ -51,4 +51,4 @@ vignettes/*.pdf
 .DS_Store
 
 #Lesson pdf
-*.pdf
+#*.pdf
