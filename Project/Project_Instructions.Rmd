@@ -1,7 +1,6 @@
 ---
 title: "TSA - Final Project Instructions"
 author: "Luana Lima"
-date: "Spring 2022"
 output: pdf_document
 geometry: margin=2.54cm
 ---
@@ -34,15 +33,15 @@ geometry: margin=2.54cm
 
 ### General Guidelines
 
-1. Use Rmd for your final report 
+1. Use Rmd for your final report.
 
-2. Write in scientific style, not narrative style
+2. Write in scientific style, not narrative style.
 
-3. [Global options for R chunks](https://rmarkdown.rstudio.com/lesson-3.html) should be set so that only relevant output is displayed. Turs on/off messages and warnings when applicable to avoid unnecessary outputs on the pdf.
+3. [Global options for R chunks](https://rmarkdown.rstudio.com/lesson-3.html) should be set so that only relevant output is displayed. Turn on/off messages and warnings when applicable to avoid unnecessary outputs on the pdf.
 
-4. Make sure your final knitted PDF looks professional. Format tables, size figures, chapters, etc.
+4. Make sure your final knitted PDF looks professional. Format tables, figures, chapters, etc.
 
-5. Make sure the PDF file has the file name "Lastname_ENV790_Project.pdf" and submit it to the dropbox in Sakai. You will only submit your PDF file.
+5. Make sure the PDF file has the file name "Lastname_ENV790_Project.pdf" and submit it to Sakai under A10 - Final Project. You will only submit your PDF file.
 
 ### Contents of the Report 
 
@@ -54,7 +53,7 @@ Write a few paragraphs detailing the rationale for your study. This should inclu
 
 Provide information on how the dataset for this analysis were collected (source), the data contained in the dataset (format). Describe how you wrangled/processed your dataset to get the time series object.
 
-Add a table that summarizes your data structure (variables, units, ranges and/or central tendencies, data source if multiple are used, etc.). This table should inserted as a `kable` function in an R chunk. Just show the firts 10 rows of your data. Do not include the code used to generate your table.
+Add a table that summarizes your data structure (variables, units, ranges and/or central tendencies, data source if multiple are used, etc.). This table should inserted as a `kable` function in an R chunk. Just show the first 10 rows of your data. Do not include the code used to generate your table.
 
 
 #### Analysis (Methods and Models)
